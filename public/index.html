@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #4A90E2;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+        }
+
+        #multiplier {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 200px;
+        }
+
+        button:disabled {
+            background-color: #BDC3C7;
+            cursor: not-allowed;
+        }
+
+        button:hover:enabled {
+            background-color: #45a049;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .info-text {
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aviator Game</h1>
+    <p>Multiplier: <span id="multiplier">1.0</span>x</p>
+
+    <div class="button-container">
+        <button id="start">Start Game</button>
+        <button id="cashout" disabled>Cash Out</button>
+    </div>
+
+    <div class="info-text">
+        <p>Press "Start Game" to begin. Once the game starts, you can choose to "Cash Out" at any time!</p>
+    </div>
+
+    <script>
+        const multiplierDisplay = document.getElementById("multiplier");
+        const startButton = document.getElementById("start");
+        const cashoutButton = document.getElementById("cashout");
+
+        let interval;
+
+        startButton.addEventListener("click", async () => {
+            await fetch("http://localhost:3000/start", { method: "POST" });
+            cashoutButton.disabled = false;
+            startButton.disabled = true;
+
+            interval = setInterval(async () => {
+                const response = await fetch("http://localhost:3000/multiplier");
+                const data = await response.json();
+                multiplierDisplay.textContent = data.multiplier;
+            }, 500);
+        });
+
+        cashoutButton.addEventListener("click", async () => {
+            const response = await fetch("http://localhost:3000/cashout", { method: "POST" });
+            const data = await response.json();
+            alert(data.message);
+            clearInterval(interval);
+            cashoutButton.disabled = true;
+            startButton.disabled = false;
+        });
+    </script>
+</body>
+</html>
