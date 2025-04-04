@@ -1,5 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Node + JS Navbar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar will be injected here -->
+    <div id="navbar"></div>
+
+    <body>
+        <h1>Aviator Game</h1>
+        <p>Multiplier: <span id="multiplier">1.0</span>x</p>
+    
+        <div class="button-container">
+            <button id="start">Start Game</button>
+            <button id="cashout" disabled>Cash Out</button>
+        </div>
+    
+        <div class="info-text">
+            <p>Press "Start Game" to begin. Once the game starts, you can choose to "Cash Out" at any time!</p>
+        </div>
+    
+        <script>
+            const multiplierDisplay = document.getElementById("multiplier");
+            const startButton = document.getElementById("start");
+            const cashoutButton = document.getElementById("cashout");
+    
+            let interval;
+    
+            startButton.addEventListener("click", async () => {
+                await fetch("http://localhost:3000/start", { method: "POST" });
+                cashoutButton.disabled = false;
+                startButton.disabled = true;
+    
+                interval = setInterval(async () => {
+                    const response = await fetch("http://localhost:3000/multiplier");
+                    const data = await response.json();
+                    multiplierDisplay.textContent = data.multiplier;
+                }, 500);
+            });
+    
+            cashoutButton.addEventListener("click", async () => {
+                const response = await fetch("http://localhost:3000/cashout", { method: "POST" });
+                const data = await response.json();
+                alert(data.message);
+                clearInterval(interval);
+                cashoutButton.disabled = true;
+                startButton.disabled = false;
+            });
+        </script>
+    </body>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,46 +126,4 @@
         }
     </style>
 </head>
-<body>
-    <h1>Aviator Game</h1>
-    <p>Multiplier: <span id="multiplier">1.0</span>x</p>
-
-    <div class="button-container">
-        <button id="start">Start Game</button>
-        <button id="cashout" disabled>Cash Out</button>
-    </div>
-
-    <div class="info-text">
-        <p>Press "Start Game" to begin. Once the game starts, you can choose to "Cash Out" at any time!</p>
-    </div>
-
-    <script>
-        const multiplierDisplay = document.getElementById("multiplier");
-        const startButton = document.getElementById("start");
-        const cashoutButton = document.getElementById("cashout");
-
-        let interval;
-
-        startButton.addEventListener("click", async () => {
-            await fetch("http://localhost:3000/start", { method: "POST" });
-            cashoutButton.disabled = false;
-            startButton.disabled = true;
-
-            interval = setInterval(async () => {
-                const response = await fetch("http://localhost:3000/multiplier");
-                const data = await response.json();
-                multiplierDisplay.textContent = data.multiplier;
-            }, 500);
-        });
-
-        cashoutButton.addEventListener("click", async () => {
-            const response = await fetch("http://localhost:3000/cashout", { method: "POST" });
-            const data = await response.json();
-            alert(data.message);
-            clearInterval(interval);
-            cashoutButton.disabled = true;
-            startButton.disabled = false;
-        });
-    </script>
-</body>
 </html>

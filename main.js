@@ -10,12 +10,12 @@ const startGame = () => {
   if (isPlaying) return; // Prevent multiple games from starting
 
   isPlaying = true;
-  multiplier = 1.0;
-  intervalSpeed = 700;
+  multiplier = 1.00;
+  intervalSpeed = 500;
 
   interval = setInterval(() => {
-    multiplier = parseFloat((multiplier + 0.1).toFixed(2));
-    intervalSpeed = Math.min(intervalSpeed * 1.015, 2000);
+    multiplier = parseFloat((multiplier + 0.01).toFixed(2));
+    intervalSpeed = Math.min(intervalSpeed * 1.015, 10000);
   }, intervalSpeed);
 };
 
