@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const main = require('./main'); // Import game logic
+const main = require('./public/avaitorMain'); // Import game logic
 
 const app = express();
 const PORT = 3000;
