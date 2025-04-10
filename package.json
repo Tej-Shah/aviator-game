@@ -1,16 +1,27 @@
 {
-  "name": "my-node-app",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm start --prefix client\""
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "name": "aviator-game-13.17.23",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tej-Shah/aviator-game.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0"
-  }
+  "bugs": {
+    "url": "https://github.com/Tej-Shah/aviator-game/issues"
+  },
+  "homepage": "https://github.com/Tej-Shah/aviator-game#readme",
+  "description": ""
 }
